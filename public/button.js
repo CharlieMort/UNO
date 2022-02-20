@@ -31,9 +31,12 @@ class CardButton {
         this.x = x
         this.y = y
         this.callback = callback;
+        this.enabled = false;
     }
 
     show() {
+        if (this.enabled) tint(255);
+        else tint(100);
         image(backImg, this.x, this.y, cardWidth, cardHeight);
     }
 
@@ -46,6 +49,8 @@ class CardButton {
 class MenuButton extends Button {
     constructor(x, y, txt, callback) {
         super(x, y, Math.max(30*txt.length, 330), 65, callback, [215, 38, 0], txt, 45, [236,212,7]);
+        this.x -= this.w/2;
+        this.y -= this.h/2;
     }
 
     show() {

@@ -2,7 +2,8 @@ let me = undefined;
 
 function JoinRoom() {
     let code = prompt("Enter Room Code");
-    if (code) code.toUpperCase();
+    if (code) code = code.toUpperCase();
+    console.log(code);
     socket.emit("joinRoom", code);
 }
 
@@ -19,8 +20,8 @@ let changeIconBtnLeft;
 const maxNickLength = 14;
 
 function SetupLobby() {
-    joinGameBtn = new MenuButton(width/2-100, height/2, "Join Room", JoinRoom);
-    createGameBtn = new MenuButton(width/2-100, height/2-75, "Create Room", CreateRoom);
+    joinGameBtn = new MenuButton(width/2, height/2+100, "Join Room", JoinRoom);
+    createGameBtn = new MenuButton(width/2, height/2+20, "Create Room", CreateRoom);
     changeIconBtnLeft = new TriangleButton(0,0,0,0,(id) => {
         socket.emit("changeProfileIdx", roomInfo.code, me, (roomInfo.players[id].imgID-1)%profilePictures.length)
     });
@@ -28,8 +29,9 @@ function SetupLobby() {
         socket.emit("changeProfileIdx", roomInfo.code, me, (roomInfo.players[id].imgID+1)%profilePictures.length)
     })
     startGameBtn = new MenuButton(width/2-100, height-100, "Start Game", () => {
-        socket.emit("startGame", roomInfo.code);
-        state = "game"
+        // socket.emit("startGame", roomInfo.code);
+        state = "winner"
+        roomInfo.winner = 1;
     })
 }
 
@@ -79,6 +81,9 @@ function Lobby() {
                 }
             }
         }
+        image(logo, width/2, height/5, 3664/10, 3248/10);
+        image(leftEmote, width/5, height/2, width/8, width/8);
+        image(rightEmote, (width/5)*4, height/2, width/8, width/8);
         joinGameBtn.show();
         createGameBtn.show();
     }

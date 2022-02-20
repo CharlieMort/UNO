@@ -553,7 +553,7 @@ let rooms = {};
 
 function makeID(IDLength) {
     let result = "";
-    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let characters = "ABCDEFGHJKMNPQRSTUVWXYZABCDEFGHJKMNPQRSTUVWXYZ0123456789";
     let charactersLength = characters.length;
     for (let i = 0; i < IDLength; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -587,7 +587,8 @@ function CreateRoom() {
         running: false,
         topCard: GetCard(),
 		pickUpAmount: 0,
-		direction: 1
+		direction: 1,
+		winner: 5
     }
     return code;
 }
@@ -628,6 +629,9 @@ function RemoveCard(hand, card) {
 function playCard(code, card) {
 	console.log(card);
 	RemoveCard(rooms[code].players[rooms[code].turn].hand, card);
+  	if (rooms[code].players[rooms[code].turn].hand.length === 0) {
+		rooms[code].winner = rooms[code].turn;
+	}
     switch (card.type) {
 		case "plus4":
 			if (CheckForCard(rooms[code].players[NextTurn(code)].hand, "plus4")) {

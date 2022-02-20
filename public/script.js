@@ -14,9 +14,13 @@ let newCardBtn;
 let topCard;
 let chooseColor = false;
 let holdCard = "";
+let logo, leftEmote, rightEmote;
 
 function preload()
 {
+	logo = loadImage("images/logo.png");
+	leftEmote = loadImage("images/reverse.gif");
+	rightEmote = loadImage("images/dance.gif");
 	backImg = loadImage("images/cardback.png")
 	deckImg = loadImage("images/uno deck.png")
 	profilePictures.push(loadImage("images/ProfilePics/360-wave.png"));
@@ -110,7 +114,10 @@ function playCard(card) {
 function setup()
 {
 	splitSprites();
-	createCanvas(windowWidth-(windowWidth/15), windowHeight-(windowHeight/15))
+	let aspect = 0;
+	if (windowWidth > windowHeight) aspect = windowHeight/9;
+	else aspect = windowWidth/16;
+	createCanvas(aspect*15, aspect*8);
 	frameRate(60)
 	imageMode(CENTER, CENTER)
 	textAlign(CENTER, CENTER);
@@ -142,11 +149,18 @@ function setup()
 				}
 			})
 		}
-		if (roomInfo.running === true) {
+		if (roomInfo.winner !== 5) {
+			state = "winner";
+		}
+		else if (roomInfo.running === true) {
 			state = "game";
 		}
-		if (roomInfo.turn === me) hand.enabled = true;
-		else hand.enabled = false;
+		if (roomInfo.turn === me) {
+			hand.enabled = true;
+		}
+		else {
+			hand.enabled = false;
+		}
 	});
 	socket.on("setIndex", (data) => {
 		me = data;
@@ -157,6 +171,9 @@ function setup()
 function draw()
 {
 	background(100, 0, 0)
+	// fill(255);
+	// rect(0,height/2, width, 20)
+	// rect(width/2, 0, 20, height)
 	switch(state) {
 		case "lobby":
 			Lobby();
@@ -168,6 +185,9 @@ function draw()
 			newCardBtn.show();
 			topCard.show();
 			if (chooseColor) colorChoice();
+			break;
+		case "winner":
+			winner();
 			break;
 	}
 }
