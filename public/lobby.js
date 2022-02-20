@@ -106,7 +106,7 @@ function Lobby() {
         }
         if (jettMode) {
             image(jettBackground, width/2, height/2, width, height);
-            image(logo, width/1.15, height/5, 3664/12, 3248/12);
+            image(logo, width/1.15  , height/5, 3664/12, 3248/12);
             
             joinGameBtn.show();
             createGameBtn.show();

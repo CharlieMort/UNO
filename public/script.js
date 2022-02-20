@@ -170,6 +170,9 @@ function setup()
 		else if (roomInfo.running === true) {
 			state = "game";
 		}
+		else {
+			state = "lobby";
+		}
 		if (roomInfo.turn === me) {
 			hand.enabled = true;
 			newCardBtn.enabled = true;

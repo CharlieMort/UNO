@@ -685,6 +685,34 @@ function GenerateHand(length) {
     return hand;
 }
 
+function FindRoomWithID(id) {
+    for (let code in rooms) {
+        for (let i = 0; i<rooms[code].players.length; i++) {
+            if (rooms[code].players[i].id === id) {
+                return rooms[code];
+            }
+        }
+    }
+    return false;
+}
+
+function Disconnect(id) {
+    let room = FindRoomWithID(id);
+    if (room) {
+        let idx;
+        for (let i = 0; i<room.players.length; i++) if (room.players[i].id === id) {
+            idx = i; 
+            break;
+        }
+        room.players.splice(idx, 1);
+        if (room.turn === room.players.length) room.turn = 0;
+        if (room.players.length <= 1) room.running = false;
+        sendRoomInfo(room.code);
+    }
+    console.log(`${id} Just Disconnected :(`);
+    console.log(`${io.engine.clientsCount} Clients Connected`);
+}
+
 io.on("connection", (socket) => {
     console.log(`${socket.id} Just Connected :)`);
     console.log(`${io.engine.clientsCount} Clients Connected`);
@@ -724,6 +752,9 @@ io.on("connection", (socket) => {
 		rooms[code].turn = NextTurn(code);
 		sendRoomInfo(code);
 	})
+  socket.on("disconnect", () => {
+    Disconnect(socket.id);
+  })
 })
 
 server.listen(PORT, () => console.log(`Server listening on port:${PORT}`));
