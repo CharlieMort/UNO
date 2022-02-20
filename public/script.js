@@ -7,6 +7,7 @@ let cardWidth, cardHeight;
 let deck = [];
 let socket;
 let hand;
+let otherHands = [];
 let state = "lobby";
 let roomInfo = undefined;
 let newCardBtn;
@@ -127,6 +128,20 @@ function setup()
 		topCard.color = roomInfo.topCard.color;
 		topCard.x = width/2;
 		topCard.y = height/2;
+		if (otherHands.length === 0) {
+			roomInfo.players.map((player, idx) => {
+				if (idx !== me) otherHands.push(new DumbyHand(player.hand.length, idx<me?3-idx:idx-me));
+			})
+		}
+		else {
+			let idx = 0;
+			roomInfo.players.map((player, idxx) => {
+				if (idxx !== me) {
+					otherHands[idx].size = player.hand.length;
+					idx ++;
+				}
+			})
+		}
 		if (roomInfo.running === true) {
 			state = "game";
 		}
@@ -149,6 +164,7 @@ function draw()
 		case "game":
 			image(profilePictures[roomInfo.players[me].imgID], width/3, height-cardHeight*1.25, cardWidth/1.5, cardWidth/1.5);
 			hand.show();
+			otherHands.map((oHand) => oHand.show());
 			newCardBtn.show();
 			topCard.show();
 			if (chooseColor) colorChoice();
