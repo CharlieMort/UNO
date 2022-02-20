@@ -26,7 +26,7 @@ function preload()
 	rightEmote = loadImage("images/dance.gif");
 	backImg = loadImage("images/cardback.png")
 	deckImg = loadImage("images/uno deck.png")
-	jettBackground = loadImage("images/jett/background.gif");
+	jettBackground = loadImage("images/background.gif");
 	profilePictures.push(loadImage("images/ProfilePics/360-wave.png"));
 	profilePictures.push(loadImage("images/ProfilePics/Blue-head-gamerpic.png"));
 	profilePictures.push(loadImage("images/ProfilePics/Dog-gamerpic.jpg"));
