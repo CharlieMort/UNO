@@ -80,7 +80,7 @@ function Lobby() {
                 if (inp.length <= maxNickLength) {
                     nick = inp;
                     socket.emit("setNickname", nick);
-                    if (nick.includes("ciaran") || nick.includes("jett") || nick.includes("uwu")) {
+                    if (nick.toLowerCase().includes("ciaran") || nick.toLowerCase().includes("jett") || nick.toLowerCase().includes("uwu")) {
                         jettMode = true;
                         joinGameBtn.x = 25
                         createGameBtn.x = 25
