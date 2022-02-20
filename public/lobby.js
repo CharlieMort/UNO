@@ -23,10 +23,14 @@ function SetupLobby() {
     joinGameBtn = new MenuButton(width/2, height/2+100, "Join Room", JoinRoom);
     createGameBtn = new MenuButton(width/2, height/2+20, "Create Room", CreateRoom);
     changeIconBtnLeft = new TriangleButton(0,0,0,0,(id) => {
-        socket.emit("changeProfileIdx", roomInfo.code, me, (roomInfo.players[id].imgID-1)%profilePictures.length)
+        let newId = roomInfo.players[id].imgID-1;
+        if (newId < 0) newId = ppLength;
+        socket.emit("changeProfileIdx", roomInfo.code, me, newId)
     });
     changeIconBtnRight = new TriangleButton(0,0,0,0,(id) => {
-        socket.emit("changeProfileIdx", roomInfo.code, me, (roomInfo.players[id].imgID+1)%profilePictures.length)
+        let newId = roomInfo.players[id].imgID+1;
+        if (newId >= ppLength) newId = 0;
+        socket.emit("changeProfileIdx", roomInfo.code, me, (roomInfo.players[id].imgID+1)%ppLength)
     })
     startGameBtn = new MenuButton(width/2-100, height-100, "Start Game", () => {
         socket.emit("startGame", roomInfo.code);
@@ -76,14 +80,44 @@ function Lobby() {
                 if (inp.length <= maxNickLength) {
                     nick = inp;
                     socket.emit("setNickname", nick);
+                    if (nick.includes("ciaran") || nick.includes("jett") || nick.includes("uwu")) {
+                        jettMode = true;
+                        joinGameBtn.x = 25
+                        createGameBtn.x = 25
+                        joinGameBtn.c = [4, 46, 39];
+                        joinGameBtn.txtc = 255;
+                        joinGameBtn.s = [250, 68, 84]
+                        joinGameBtn.ss = 2
+                        joinGameBtn.cs = 0
+                        joinGameBtn.txts = 30;
+                        joinGameBtn.b = false; 
+
+                        createGameBtn.c = [4, 46, 39];
+                        createGameBtn.txtc = 255;
+                        createGameBtn.s = [250, 68, 84]
+                        createGameBtn.ss = 2
+                        createGameBtn.cs = 0
+                        createGameBtn.txts = 30;
+                        createGameBtn.b = false;
+                        ppLength = profilePictures.length;
+                    }
                 }
             }
         }
-        image(logo, width/2, height/5, 3664/10, 3248/10);
-        image(leftEmote, width/5, height/2, width/8, width/8);
-        image(rightEmote, (width/5)*4, height/2, width/8, width/8);
-        joinGameBtn.show();
-        createGameBtn.show();
+        if (jettMode) {
+            image(jettBackground, width/2, height/2, width, height);
+            image(logo, width/1.15, height/5, 3664/12, 3248/12);
+            
+            joinGameBtn.show();
+            createGameBtn.show();
+        }
+        else {
+            image(logo, width/2, height/5, 3664/10, 3248/10);
+            image(leftEmote, width/5, height/2, width/8, width/8);
+            image(rightEmote, (width/5)*4, height/2, width/8, width/8);
+            joinGameBtn.show();
+            createGameBtn.show();
+        }
     }
 }
 

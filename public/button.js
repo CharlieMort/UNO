@@ -51,16 +51,21 @@ class MenuButton extends Button {
         super(x, y, Math.max(30*txt.length, 330), 65, callback, [215, 38, 0], txt, 45, [236,212,7]);
         this.x -= this.w/2;
         this.y -= this.h/2;
+        this.s = this.txtc;
+        this.ss = 5;
+        this.cs = 50;
+        this.b = true;
     }
 
     show() {
-        stroke(this.txtc)
-        strokeWeight(5)
+        stroke(this.s)
+        strokeWeight(this.ss)
         fill(this.c);
-        rect(this.x, this.y, this.w, this.h, 50);
+        rect(this.x, this.y, this.w, this.h, this.cs);
         fill(this.txtc);
         textSize(this.txts);
-        textStyle(BOLD);
+        if (this.b) textStyle(BOLD);
+        else textStyle(NORMAL)
         strokeWeight(0);
         text(this.txt, this.x+this.w/2, this.y+this.h/2);
     }

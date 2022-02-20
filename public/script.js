@@ -2,6 +2,7 @@
 // - have deck shuffled on start then queue system for card looping so repeats less random
 
 let profilePictures = [];
+let ppLength = 0;
 let backImg, deckImg;
 let cardWidth, cardHeight;
 let deck = [];
@@ -15,6 +16,8 @@ let topCard;
 let chooseColor = false;
 let holdCard = "";
 let logo, leftEmote, rightEmote;
+let jettMode = false;
+let jettBackground;
 
 function preload()
 {
@@ -23,6 +26,7 @@ function preload()
 	rightEmote = loadImage("images/dance.gif");
 	backImg = loadImage("images/cardback.png")
 	deckImg = loadImage("images/uno deck.png")
+	jettBackground = loadImage("images/jett/background.gif");
 	profilePictures.push(loadImage("images/ProfilePics/360-wave.png"));
 	profilePictures.push(loadImage("images/ProfilePics/Blue-head-gamerpic.png"));
 	profilePictures.push(loadImage("images/ProfilePics/Dog-gamerpic.jpg"));
@@ -34,6 +38,17 @@ function preload()
 	profilePictures.push(loadImage("images/ProfilePics/Pirate-gamerpic.png"));
 	profilePictures.push(loadImage("images/ProfilePics/Smiley-face-gamerpic.png"));
 	profilePictures.push(loadImage("images/ProfilePics/Soccer-ball-gamerpic.png"));
+	ppLength = profilePictures.length;
+	profilePictures.push(loadImage("images/ProfilePics/jett1.png"));
+	profilePictures.push(loadImage("images/ProfilePics/jett2.jpg"));
+	profilePictures.push(loadImage("images/ProfilePics/jett3.jpg"));
+	profilePictures.push(loadImage("images/ProfilePics/jett4.jpg"));
+	profilePictures.push(loadImage("images/ProfilePics/jett5.jpg"));
+	profilePictures.push(loadImage("images/ProfilePics/jett6.jpg"));
+	profilePictures.push(loadImage("images/ProfilePics/jett7.jpg"));
+	profilePictures.push(loadImage("images/ProfilePics/jett8.jpg"));
+	profilePictures.push(loadImage("images/ProfilePics/jett9.jpg"));
+	profilePictures.push(loadImage("images/ProfilePics/jett10.jpg"));
 }
 
 function splitSprites() {
@@ -157,9 +172,11 @@ function setup()
 		}
 		if (roomInfo.turn === me) {
 			hand.enabled = true;
+			newCardBtn.enabled = true;
 		}
 		else {
 			hand.enabled = false;
+			newCardBtn.enabled = false;
 		}
 	});
 	socket.on("setIndex", (data) => {
