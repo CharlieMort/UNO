@@ -29,9 +29,7 @@ function SetupLobby() {
         socket.emit("changeProfileIdx", roomInfo.code, me, (roomInfo.players[id].imgID+1)%profilePictures.length)
     })
     startGameBtn = new MenuButton(width/2-100, height-100, "Start Game", () => {
-        // socket.emit("startGame", roomInfo.code);
-        state = "winner"
-        roomInfo.winner = 1;
+        socket.emit("startGame", roomInfo.code);
     })
 }
 
