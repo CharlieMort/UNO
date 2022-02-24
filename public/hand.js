@@ -76,9 +76,12 @@ class DumbyHand{
                 break;
         }
         this.size = size;
+        this.enabled = false;
     }
 
     show() {
+        if (this.enabled) tint(255);
+        else tint(100);
         if (this.vertical) {
             let top = this.y;
             let seperationY = cardHeight/3;

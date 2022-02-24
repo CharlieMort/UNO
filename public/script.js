@@ -151,19 +151,17 @@ function setup()
 		topCard.x = width/2;
 		topCard.y = height/2;
 		if (otherHands.length === 0) {
-			roomInfo.players.map((player, idx) => {
-				if (idx !== me) otherHands.push(new DumbyHand(player.hand.length, idx<me?3-idx:idx-me));
-			})
+			for (let i = 0; i<3; i++) {
+				otherHands.push(new DumbyHand(1, i));
+			}
 		}
-		else {
-			let idx = 0;
-			roomInfo.players.map((player, idxx) => {
-				if (idxx !== me) {
-					otherHands[idx].size = player.hand.length;
-					idx ++;
-				}
-			})
-		}
+		let idx = 0;
+		roomInfo.players.map((player, idxx) => {
+			if (idxx !== me) {
+				otherHands[idx].size = player.hand.length;
+				idx ++;
+			}
+		})
 		if (roomInfo.winner !== 5) {
 			state = "winner";
 		}
@@ -180,6 +178,14 @@ function setup()
 		else {
 			hand.enabled = false;
 			newCardBtn.enabled = false;
+			let i = 0;
+			roomInfo.players.map((player, idx) => {
+				if (idx !== me) {
+					i++;
+				}
+				if (roomInfo.turn === idx) otherHands[i].enabled = true;
+				else otherHands[i].enabled = false;
+			})
 		}
 	});
 	socket.on("setIndex", (data) => {
@@ -200,6 +206,7 @@ function draw()
 			break;
 		case "game":
 			image(profilePictures[roomInfo.players[me].imgID], width/3, height-cardHeight*1.25, cardWidth/1.5, cardWidth/1.5);
+			hand.hoverOver(mouseX, mouseY);
 			hand.show();
 			otherHands.map((oHand) => oHand.show());
 			newCardBtn.show();
